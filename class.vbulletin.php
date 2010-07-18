@@ -185,6 +185,27 @@ class Vbulletin extends ExportController {
 			where state='visible'", $Activity_Map);
       }
       
+      // Avatars
+      $ForumDirectory = getcwd();
+      if($Ex->UseCompression() && function_exists('zip_open') && file_exists($ForumDirectory.'/showthread.php')) {
+         // We're compressing && Have zip && Export file is in their forum root
+         $PathResult = $Ex->Query("SELECT value FROM :_setting WHERE varname='avatarpath'");
+         if (is_resource($PathResult)) {
+            // Got a result
+            $Field = @mysql_fetch_row($PathResult);
+            $AvatarPath = $Field['value'];
+            if($AvatarPath != '') {
+               // Got a good directory (well, maybe, but let's go anyway)
+               cwd($AvatarPath);
+               foreach(glob('*.gif') as $filename) {
+                  // vBulletin only stores avatars as .gif
+                  # This is where we'll add 'em to the zip archive once I add hot zipping action
+               }
+               cwd($ForumDirectory); // Back from whence you came!
+            }
+         }
+      }
+      
       // End
       $Ex->EndExport();
    }
