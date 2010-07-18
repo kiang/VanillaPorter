@@ -187,7 +187,7 @@ class Vbulletin extends ExportController {
       
       // Avatars
       $ForumDirectory = getcwd();
-      if($Ex->UseCompression() && function_exists('zip_open') && file_exists($ForumDirectory.'/showthread.php')) {
+      if($Ex->UseCompression() && class_exists('ZipArchive') && file_exists($ForumDirectory.'/showthread.php')) {
          // We're compressing && Have zip && Export file is in their forum root
          $PathResult = $Ex->Query("SELECT value FROM :_setting WHERE varname='avatarpath'");
          if (is_resource($PathResult)) {
